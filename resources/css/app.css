@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+[x-cloak] { display: none !important; }
+
+@layer components {
+    .card { @apply rounded-2xl border border-slate-200 bg-white shadow-sm; }
+    .btn { @apply inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-semibold transition focus:outline-none focus:ring-2 focus:ring-offset-2; }
+    .btn-primary { @apply btn bg-amber-500 text-slate-950 hover:bg-amber-400 focus:ring-amber-500; }
+    .btn-secondary { @apply btn border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 focus:ring-slate-400; }
+    .btn-danger { @apply btn bg-red-600 text-white hover:bg-red-500 focus:ring-red-500; }
+    .form-label { @apply mb-1.5 block text-sm font-semibold text-slate-700; }
+    .form-input { @apply block w-full rounded-lg border-slate-300 text-sm shadow-sm focus:border-amber-500 focus:ring-amber-500; }
+    .table-wrap { @apply overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm; }
+    .data-table { @apply min-w-full divide-y divide-slate-200; }
+    .data-table th { @apply bg-slate-50 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500; }
+    .data-table td { @apply whitespace-nowrap px-5 py-4 text-sm text-slate-700; }
+    .data-table tbody { @apply divide-y divide-slate-100; }
+}
+
+@media print { .no-print { display: none !important; } body { background: white !important; } .print-card { box-shadow:none!important; border:0!important; } }

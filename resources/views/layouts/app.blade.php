@@ -1,0 +1,18 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="csrf-token" content="{{ csrf_token() }}"><title>{{ $title ?? 'Barbershop Management' }}</title>@vite(['resources/css/app.css','resources/js/app.js'])</head>
+<body class="bg-slate-100 font-sans text-slate-900 antialiased" x-data="{sidebar:false}">
+<div class="min-h-screen lg:flex">
+    <div x-show="sidebar" x-transition.opacity class="fixed inset-0 z-30 bg-slate-950/60 lg:hidden" @click="sidebar=false"></div>
+    <aside :class="sidebar ? 'translate-x-0' : '-translate-x-full'" class="fixed inset-y-0 left-0 z-40 flex w-72 flex-col bg-slate-950 text-slate-300 transition-transform lg:static lg:translate-x-0">
+        <div class="flex h-20 items-center gap-3 border-b border-white/10 px-6"><div class="grid h-11 w-11 place-items-center rounded-xl bg-amber-500 text-xl font-black text-slate-950">J</div><div><div class="font-bold text-white">Barbershop ni Jiji</div><div class="text-xs text-slate-400">Management System</div></div></div>
+        @php $nav=[['dashboard','Dashboard','⌂'],['customers.index','Customers','♟'],['barbers.index','Barbers','✂'],['services.index','Services','◆'],['appointments.index','Appointments','◷'],['payments.index','Payments','₱'],['reports.index','Reports','▥'],['settings.edit','Settings','⚙'],['users.index','User Accounts','♙']]; @endphp
+        <nav class="flex-1 space-y-1 overflow-y-auto p-4">
+            @foreach($nav as [$route,$label,$icon]) @if(auth()->user()->isAdmin() || in_array($route,['dashboard','appointments.index']))
+            <a href="{{ route($route) }}" class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium {{ request()->routeIs(str_replace('.index','.*',$route)) || request()->routeIs($route) ? 'bg-amber-500 text-slate-950' : 'hover:bg-white/10 hover:text-white' }}"><span class="w-5 text-center text-lg">{{ $icon }}</span>{{ $label }}</a>
+            @endif @endforeach
+        </nav>
+        <div class="border-t border-white/10 p-4"><a href="{{ route('profile.edit') }}" class="mb-3 flex items-center gap-3 rounded-xl p-3 hover:bg-white/10"><div class="grid h-9 w-9 place-items-center rounded-full bg-amber-500 font-bold text-slate-950">{{ substr(auth()->user()->name,0,1) }}</div><div class="min-w-0"><div class="truncate text-sm font-semibold text-white">{{ auth()->user()->name }}</div><div class="text-xs capitalize text-slate-400">{{ auth()->user()->role }}</div></div></a><form method="POST" action="{{ route('logout') }}">@csrf<button class="w-full rounded-lg border border-white/10 px-4 py-2 text-left text-sm hover:bg-white/10">Sign out</button></form></div>
+    </aside>
+    <div class="min-w-0 flex-1"><header class="sticky top-0 z-20 flex h-16 items-center justify-between border-b border-slate-200 bg-white/95 px-4 backdrop-blur sm:px-8"><button @click="sidebar=true" class="rounded-lg p-2 text-xl lg:hidden">☰</button><div class="text-sm text-slate-500">{{ now()->format('l, F j, Y') }}</div><div class="text-sm font-semibold">{{ auth()->user()->name }}</div></header>
+        <main class="p-4 sm:p-8"><div class="mx-auto max-w-7xl">@if(session('success'))<div class="mb-5 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-800">{{ session('success') }}</div>@endif @if($errors->any())<div class="mb-5 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800"><strong>Please correct the following:</strong><ul class="mt-1 list-disc pl-5">@foreach($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul></div>@endif {{ $slot }}</div></main>
+    </div>
+</div></body></html>
